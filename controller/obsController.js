@@ -1,10 +1,12 @@
 const obsDb = require('../config/db.js');
 
-const getObsLivestream = (req, res, next) => {
-    const data = obsDb.from("livestream_stats").select('*').json
-    if (data != null) res.status.send(data) 
-    else res.status(400).json({message: "empty data"})
-    next()
+const getObsLivestream =async  (req, res, next) => {
+    const data = await obsDb("livestream_stats")
+    if (data != null){
+        return res.status(200).json(data)
+    }else{
+        return res.status(404).json({message: "Data not found"})
+    }
 }
 
 const postStreamEvent = async (req, res, next) => {
@@ -16,23 +18,35 @@ const postStreamEvent = async (req, res, next) => {
 const postViewCount = async (req, res, next) => {
     const isViewing = req.body.is_viewing
     const streamKey = req.body.stream_key
-    obsDb.from("livestream_stats").select('view_count')
+    // return res.json({message: isViewing, streamKey: streamKey})
+    let viewCount = 0
+    await obsDb("livestream_stats").select('view_count')
     .where('stream_key', '=', streamKey).then((rows) => {
-        let viewCount = rows[0].view_count
+        viewCount = rows[0].view_count
         console.log(viewCount)
+        // return res.json({message: viewCount})
+    })
 
         if (isViewing == true) {
             viewCount++
         } else {
             viewCount--
         }
+
+        // return res.json({message: viewCount})
     
-        const count = obsDb.from('livestream_stats')
-            .update('view_count', viewCount).where('stream_key', streamKey)
-            .then(res.status(200).json({message: "berhasil"}))
-            .catch(res.status(404).json({message: "gagal"}))
-    })
-    next()
+        // const count = obsDb('livestream_stats')
+        //     .update('view_count', viewCount).where('stream_key', streamKey)
+        //     .then(res.status(200).json({message: "berhasil"}))
+        //     .catch(res.status(404).json({message: "gagal"}))
+
+        await obsDb('livestream_stats').where('stream_key',streamKey).update({
+            "view_count": viewCount
+        })
+
+        return res.status(200).json({message: "berhasil"})
+    
+    // next()
 }
 
 module.exports = {
