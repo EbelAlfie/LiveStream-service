@@ -26,31 +26,38 @@ const postViewCount = async (req, res, next) => {
         console.log(viewCount)
         // return res.json({message: viewCount})
     })
-
-        if (isViewing == true) {
-            viewCount++
-        } else {
-            viewCount--
-        }
-
-        // return res.json({message: viewCount})
     
-        // const count = obsDb('livestream_stats')
-        //     .update('view_count', viewCount).where('stream_key', streamKey)
-        //     .then(res.status(200).json({message: "berhasil"}))
-        //     .catch(res.status(404).json({message: "gagal"}))
+    if (viewCount == 0) return res.status(401).json({message: "sudah 0"})
 
-        await obsDb('livestream_stats').where('stream_key',streamKey).update({
-            "view_count": viewCount
-        })
+    if (isViewing == true) {
+        viewCount++
+    } else {
+        viewCount--
+    }
 
-        return res.status(200).json({message: "berhasil"})
+    await obsDb('livestream_stats').where('stream_key',streamKey).update({
+        "view_count": viewCount
+    })
+
+    return res.status(200).json({message: "berhasil"})
+}
+
+const getViewCount = async (req, res) => {
+    console.log(req.query.stream_key)
+    let streamKey = req.query.stream_key
+    let viewCount = 0
+    await obsDb("livestream_stats").select('view_count')
+    .where('stream_key', '=', streamKey).then((rows) => {
+        viewCount = rows[0].view_count
+        console.log(viewCount)  
+    })
     
-    // next()
+    return res.status(200).json({view_count: viewCount})
 }
 
 module.exports = {
     getObsLivestream,
     postStreamEvent,
+    getViewCount,
     postViewCount
 }

@@ -4,7 +4,9 @@ const obsController = require('../controller/obsController');
 
 router.get('/', obsController.getObsLivestream)
 
-router.post('/view-count', obsController.postViewCount)
+router.post('/view', obsController.postViewCount)
+
+router.get('/view-count', obsController.getViewCount)
 
 router.post('/live', obsController.postStreamEvent)
 
