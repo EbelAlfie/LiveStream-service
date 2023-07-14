@@ -10,4 +10,6 @@ router.get('/view-count', obsController.getViewCount)
 
 router.post('/live', obsController.postStreamEvent)
 
+router.post('/add-like/:streamkey',obsController.addLike)
+
 module.exports = router

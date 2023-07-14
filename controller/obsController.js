@@ -55,9 +55,28 @@ const getViewCount = async (req, res) => {
     return res.status(200).json({view_count: viewCount})
 }
 
+const addLike  = async(req,res)=>{
+    try{
+        const stream_key = req.params.streamkey
+        const data = await obsDb("livestream_stats").where('stream_key',stream_key)
+        if(data != null){
+            let likeCount = data[0].like_count + 1
+            await obsDb("livestream_stats").where('stream_key',stream_key).update({
+                "like_count":likeCount
+            })
+            return res.status(200).json({like:likeCount})
+        }else{
+            return res.status(400).json({data:"gada streamkey"})
+        }
+    }catch(err){
+        return res.status(500).json({message: err})
+    }
+}
+
 module.exports = {
     getObsLivestream,
     postStreamEvent,
     getViewCount,
-    postViewCount
+    postViewCount,
+    addLike
 }
