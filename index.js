@@ -4,12 +4,18 @@ const port = 3001
 const apiRoute = require('./routes')
 var cors = require("cors");
 const middleware = require('./middleware')
+const ngrok = require('./config/ngrokConfig')
+const axios = require('axios')
 
-app.use(cors());
+main()
 
-app.use(middleware)
-app.use(express.json())
-app.use('/livestreamapi', apiRoute)
+function main() {
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-
+    app.use(cors());
+    
+    app.use(middleware)
+    app.use(express.json())
+    app.use('/livestreamapi', apiRoute)
+    
+    app.listen(port, () => console.log(`Example app listening on port ${port}!`)) 
+}

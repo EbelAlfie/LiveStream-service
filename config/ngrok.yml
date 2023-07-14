@@ -1,0 +1,13 @@
+version: "2"
+authtoken: "2RpDZxq76iJ5adVa7dcUcqHZyX0_4dg5Q5ppWzGnxXMScTkjH"
+tunnels:
+    rtmp:
+        proto: tcp
+        addr: 1935
+    dash:
+        proto: http
+        addr: 9090
+    http:
+        proto: http
+        addr: 3001
+        domain: 1dcd6b126c49-12390209840656915252.ngrok-free.app

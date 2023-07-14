@@ -4,10 +4,10 @@ const obsController = require('../controller/obsController');
 
 router.get('/', obsController.getObsLivestream)
 
-router.post('/view', obsController.postViewCount)
-
 router.get('/view-count', obsController.getViewCount)
 
 router.post('/live', obsController.postStreamEvent)
+
+router.get('/tunnel', obsController.getTunnelSessions)
 
 module.exports = router
