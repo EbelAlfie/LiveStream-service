@@ -1,4 +1,5 @@
 const obsDb = require('../config/db.js');
+const ngrok = require('../config/ngrokConfig.js');
 
 const getObsLivestream =async  (req, res, next) => {
     const data = await obsDb("livestream_stats")
@@ -16,30 +17,21 @@ const postStreamEvent = async (req, res, next) => {
 }
 
 const postViewCount = async (req, res, next) => {
-    const isViewing = req.body.is_viewing
-    const streamKey = req.body.stream_key
-    // return res.json({message: isViewing, streamKey: streamKey})
-    let viewCount = 0
+    //listen ke port tcp atau http 
+    //dan liat berapa user yang buat session dan request
+
+
     await obsDb("livestream_stats").select('view_count')
     .where('stream_key', '=', streamKey).then((rows) => {
         viewCount = rows[0].view_count
         console.log(viewCount)
-        // return res.json({message: viewCount})
     })
-    
-    if (viewCount == 0) return res.status(401).json({message: "sudah 0"})
+}
 
-    if (isViewing == true) {
-        viewCount++
-    } else {
-        viewCount--
-    }
-
-    await obsDb('livestream_stats').where('stream_key',streamKey).update({
-        "view_count": viewCount
-    })
-
-    return res.status(200).json({message: "berhasil"})
+const getTunnelSessions = async (req, res) => {
+    const ngrokApi = ngrok.getApi();
+    console.log(ngrokApi.)
+    res.json({req: ngrokApi.listRequests()})
 }
 
 const getViewCount = async (req, res) => {
@@ -59,5 +51,6 @@ module.exports = {
     getObsLivestream,
     postStreamEvent,
     getViewCount,
-    postViewCount
+    postViewCount,
+    getTunnelSessions
 }
