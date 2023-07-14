@@ -93,6 +93,9 @@ const changeHighlightProduct = async(req,res)=>{
     try{
         const id = req.params.id;
         const data = await knex("products").where("id",id)
+        if(data[0].is_active == 0){
+            return res.status(400).json({message: "produk tidak aktif"})
+        }
         if(data[0].is_highlight == 0){
             await knex("products").where("id",id).update({
                 "is_highlight": 1

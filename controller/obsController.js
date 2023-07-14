@@ -21,14 +21,14 @@ const postViewCount = async (req, res, next) => {
     // return res.json({message: isViewing, streamKey: streamKey})
     let viewCount = 0
     await obsDb("livestream_stats").select('view_count')
-    .where('stream_key', '=', streamKey).then((rows) => {
+    .where('stream_key', streamKey).then((rows) => {
         viewCount = rows[0].view_count
         console.log(viewCount)
         // return res.json({message: viewCount})
     })
     
-    if (viewCount == 0) return res.status(401).json({message: "sudah 0"})
-
+    if (isViewing == false && viewCount == 0) return res.status(401).json({message: "sudah 0"})
+    
     if (isViewing == true) {
         viewCount++
     } else {
