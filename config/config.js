@@ -6,10 +6,10 @@ module.exports =  {
     hls: {
         proto: 'http',
         addr: 9090,
-        hostname: '1dcd6b126c49-12390209840656915252.ngrok-free.app'
     },
-    rest: {
+    docker: {
         proto: 'http',
-        addr: 3001
+        addr: 3002,
+        hostname: '1dcd6b126c49-12390209840656915252.ngrok-free.app'
     }
 }
