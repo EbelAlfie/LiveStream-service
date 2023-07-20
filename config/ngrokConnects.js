@@ -15,12 +15,14 @@ const startHls = async () => {
 }
 
 const startDocker = async () => {
+    let dns = ''
     await ngrok.connect(config.docker)
     .then((url) => {
         console.log(`started at ${url}`)
-        docker(url)
+        dns = url
     })
     .catch((error) => console.log(`ngrok error: ${error}`))
+    return dns
 }
 
 module.exports = {

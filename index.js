@@ -12,9 +12,9 @@ main()
 
 async function main() {
 
-    await ngrokInst.startRtmp()
-    await ngrokInst.startHls()
-    await ngrokInst.startDocker()
+    await ngrokInst.startRtmp();
+    await ngrokInst.startHls();
+    docker(await ngrokInst.startDocker());
 
     app.use(cors());
 

@@ -9,7 +9,7 @@ module.exports =  {
     },
     docker: {
         proto: 'http',
-        addr: 3002,
+        addr: 1375,
         hostname: '1dcd6b126c49-12390209840656915252.ngrok-free.app'
     }
 }
